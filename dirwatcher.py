@@ -5,10 +5,10 @@ import argparse
 import time
 import datetime
 import logging
+import signal
 
 
-
-_author_ = 'Koren Nyles, Chris Wilson, Sean Bailey, a lot from Stew and Piero Demo Video'
+_author_ = 'Koren Nyles, Chris Wilson, Sean Bailey, Stew and Piero Demo Video'
 
 logger = logging.getLogger(__file__)
 exit_flag = False
@@ -33,7 +33,27 @@ def watch_directory(args):
             logger.info('New file: {} found in {}'.format(file, args.path))
             files_found.append(file)
             magic_word_position[file] = 0
- 
+    for file in files_found:
+        if file not in files_in_directory:
+            logger.info('File: {} removed from {}'.format(file, args.path))
+            files_found.remove(file)
+            del magic_word_position[file]
+    for file in files_found:
+        find_magic(file, args.magic, directory)
+
+
+def signal_handler(sig_num, frame):
+    """Looks for signals SIGINT and SIGTERM and toggles the exit_flag"""
+    global exit_flag
+    # log the associated signal name (the python3 way)
+    # logger.warn('Received ' + signal.Signals(sig_num).name)
+    # log the signal name (the python2 way)
+    signames = dict((k, v) for v, k in reversed(sorted(
+        signal._dict_.items()))
+        if v.startswith('SIG') and not v.startswith('SIG_'))
+    logger.warning('Received signal: ' + signames[sig_num])
+    if sig_num == signal.SIGINT or signal.SIGTERM:
+        exit_flag = True
 
 
 def find_magic(filename, magic_word, directory):
@@ -83,7 +103,8 @@ def main():
     )
     parser = create_parser()
     args = parser.parse_args()
-   
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
     while not exit_flag:
         try:
             watch_directory(args)
