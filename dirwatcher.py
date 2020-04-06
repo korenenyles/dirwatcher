@@ -7,12 +7,13 @@ import datetime
 import logging
 import signal
 
-
 _author_ = 'Koren Nyles, Chris Wilson, Sean Bailey, Stew and Piero Demo Video'
+
 
 logger = logging.getLogger(__file__)
 exit_flag = False
 files_found = []
+
 magic_word_position = {}
 
 
