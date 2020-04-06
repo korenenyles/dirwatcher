@@ -13,7 +13,6 @@ _author_ = 'Koren Nyles, Chris Wilson, Sean Bailey, Stew and Piero Demo Video'
 logger = logging.getLogger(__file__)
 exit_flag = False
 files_found = []
-
 magic_word_position = {}
 
 
@@ -44,7 +43,7 @@ def watch_directory(args):
 
 
 def signal_handler(sig_num, frame):
-    """Looks for signals SIGINT and SIGTERM and toggles the exit_flag"""
+    """Looks for signals SIGINT SIGTERM toggles the exit_flag"""
     global exit_flag
     # log the associated signal name (the python3 way)
     # logger.warn('Received ' + signal.Signals(sig_num).name)
