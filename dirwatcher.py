@@ -57,7 +57,7 @@ def signal_handler(sig_num, frame):
 
 
 def find_magic(filename, magic_word, directory):
-    """Search for the magic word in the filename line by line and
+    """Search for the magic word in the filename line by line
     keep track of the last line searched"""
     global magic_word_position
     with open(directory + '/' + filename) as f:
@@ -70,7 +70,7 @@ def find_magic(filename, magic_word, directory):
 
 
 def create_parser():
-    """Creates Parser and sets up command line arguments"""
+    """Creates Parser sets up command line args"""
     parser = argparse.ArgumentParser()
     parser.add_argument('-e', '--ext', type=str, default='.txt',
                         help='Text file extention to watch')
@@ -83,8 +83,8 @@ def create_parser():
 
 def main():
     """
-    Start up and shut down banner with a signal module setup.
-    While loop that runs waiting for a SIGINT or SIGTERM to close
+    Start up/shut down banner with a signal module setup.
+    While loop runs waiting for a SIGINT or SIGTERM to close
     """
     logging.basicConfig(
         format='%(asctime)s.%(msecs)03d %(name)-12s %(levelname)-8s'
